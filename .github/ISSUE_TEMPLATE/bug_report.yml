@@ -1,0 +1,44 @@
+name: Report a bug
+description: Something broken in agy-bridge? Tell us exactly how to reproduce it.
+title: "[bug] "
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Bridge version
+      description: Output of `git log --oneline -1` in your clone, or the release tag.
+      placeholder: "e.g. 67031e9 / v1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: agy
+    attributes:
+      label: agy CLI version
+      description: Output of `agy --version`.
+      placeholder: "e.g. 1.3.5"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Exact request (curl or client config) that triggers it. Redact keys, emails, and OAuth blobs.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+      description: What you expected, and what happened instead (paste the error envelope).
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Bridge log excerpt
+      description: Relevant lines from the server log around the failure.
+      render: shell
+    validations:
+      required: false

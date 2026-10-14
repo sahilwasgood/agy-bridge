@@ -23,6 +23,15 @@ flowchart LR
 - **Trajectory guard** — clean error at 239k instead of silent truncation
 - **Zero dependencies** — Bun + Node stdlib only, 12-test suite that spends no quota
 
+## Demo
+
+![agy-bridge quickstart: models list + one completion](assets/demo.gif)
+
+```bash
+export AGY_BRIDGE_KEY=<your apiKey from agy-bridge.json>
+./examples/quickstart.sh
+```
+
 ## Why not the others
 
 | Project | What it is | Why not enough |
