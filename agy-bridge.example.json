@@ -1,0 +1,15 @@
+{
+  "_comment": "copy to agy-bridge.json and set apiKey + accounts. accounts auto-discover from accountsDir; explicit entries optional.",
+  "port": 8766,
+  "host": "127.0.0.1",
+  "apiKey": "CHANGE-ME-TO-A-LONG-RANDOM-STRING",
+  "defaultModel": "gemini-3.8-flash-medium",
+  "accountsDir": "/home/mint/agy-bridge/accounts",
+  "accounts": [],
+  "silenceTimeoutSec": 300,
+  "absoluteTimeoutSec": 1800,
+  "idleReapSec": 900,
+  "minQuotaFraction": 0.3,
+  "quotaCacheSec": 60,
+  "trajectoryCap": 239000
+}

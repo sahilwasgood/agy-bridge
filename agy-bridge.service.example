@@ -1,0 +1,15 @@
+[Unit]
+Description=agy-bridge OpenAI proxy over persistent agy workers
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/agy-bridge
+ExecStart=%h/.bun/bin/bun %h/agy-bridge/server.js
+Restart=always
+RestartSec=5
+Environment=HOME=%h
+
+[Install]
+WantedBy=default.target

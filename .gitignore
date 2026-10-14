@@ -1,0 +1,10 @@
+# runtime state: never commit
+accounts/
+agy-bridge.json
+agy-conv.json
+agy-health.json
+usage.jsonl
+.swap.lock/
+*.log
+node_modules/
+.DS_Store

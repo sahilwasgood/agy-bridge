@@ -1,0 +1,9 @@
+{
+  "name": "agy-bridge",
+  "version": "1.0.0",
+  "description": "OpenAI-compatible HTTP bridge over persistent agy workers: multi-account rotation, image input, tool-call translation",
+  "scripts": {
+    "start": "bun server.js",
+    "test": "bun test.js"
+  }
+}
