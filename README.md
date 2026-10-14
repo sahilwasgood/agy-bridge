@@ -1,16 +1,27 @@
 # agy-bridge
 
+[![MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Bun](https://img.shields.io/badge/runtime-bun-black.svg)](https://bun.sh)
+[![Linux](https://img.shields.io/badge/platform-linux-lightgrey.svg)](https://github.com/sahilwasgood/agy-bridge)
+[![OpenAI API](https://img.shields.io/badge/API-OpenAI%20compatible-blue.svg)](https://platform.openai.com/docs/api-reference/chat)
+
 OpenAI-compatible HTTP bridge over **persistent** `agy` (Google Antigravity CLI) workers — built for agentic coding harnesses like OpenCode that need multi-turn tool use, multi-account quota rotation, and vision, without re-sending the world on every turn.
 
+```mermaid
+flowchart LR
+    OC["opencode / any OpenAI client"] -->|POST /v1/chat/completions<br/>SSE + tools + images| B["agy-bridge :8766"]
+    B -->|delta prompts| W1["worker · acc1<br/>agy stream-json"]
+    B -->|delta prompts| W2["worker · acc2<br/>agy stream-json"]
+    W1 --> G["Antigravity backend"]
+    W2 --> G
+    B -.->|quota poll · failover| Q["rotation<br/>health + 429 + reset-aware"]
 ```
-opencode (or any OpenAI client)
-  │  POST /v1/chat/completions (SSE + tools + images)
-  ▼
-agy-bridge :8766 ── one long-lived `agy stream-json` worker per session
-  │  deltas only · --conversation resume · per-account --gemini_dir
-  ▼
-Google Antigravity backend (your own OAuth logins, N accounts)
-```
+
+- **Persistent workers** — one long-lived `agy stream-json` process per session; deltas only, `--conversation` resume
+- **Multi-account rotation** — health scores, quota-aware picks, 429 failover, works on keyring-global platforms via credential swap
+- **Vision** — `image_url` (data: or http) handled natively
+- **Trajectory guard** — clean error at 239k instead of silent truncation
+- **Zero dependencies** — Bun + Node stdlib only, 12-test suite that spends no quota
 
 ## Why not the others
 
@@ -22,7 +33,7 @@ Google Antigravity backend (your own OAuth logins, N accounts)
 | `hrmasss/antigravity-swap` | Multi-account switching | CLI switcher, no serving layer |
 | `andyvandaric/opencode-ag-auth` | OpenCode OAuth + rotation | Different architecture (direct API) |
 
-agy-bridge takes the worker protocol from Anubisx404, the HTTP skin from anyrobert, vision via temp files from lojik-ng, health/quota rotation constants from opencode-ag-auth, and per-account `--gemini_dir` isolation from antigravity-swap. MIT, like all of them — credits in code comments.
+agy-bridge takes the worker protocol from Anubisx404, the HTTP skin from anyrobert, vision via temp files from lojik-ng, health/quota rotation constants from opencode-ag-auth, and the credential-swap pattern for keyring-global platforms from antigravity-swap. MIT, like all of them — credits in code comments.
 
 ## Setup
 
