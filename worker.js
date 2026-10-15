@@ -122,7 +122,7 @@ export class ToolParser {
   // ["call_end", {name, args}].
   // call_start fires as soon as the block's "name" is readable, so clients
   // learn WHICH tool is coming mid-stream; full arguments land at CLOSE
-  // (partial JSON is never emitted — a broken fragment is worse than late).
+  // (partial JSON is never emitted: a broken fragment is worse than late).
   constructor(knownTools = new Set()) {
     this.known = knownTools;
     this.buf = ""; this.started = false; this.bare = false;
@@ -316,7 +316,7 @@ export async function readQuota(agyBin, geminiDir, timeoutMs = 30000) {
   });
 }
 
-// ---------- images → temp files → path references ----------
+// ---------- images to temp files to path references ----------
 export async function stageImages(messages, tmpRoot) {
   const dir = await fs.mkdtemp(path.join(tmpRoot, "agy-img-"));
   const saved = [];
@@ -358,7 +358,7 @@ export async function cleanupDir(dir) {
 
 // ---------- multi-account credential swap (keyring-global platforms) ----------
 // On desktop Linux agy's login lives in the system keyring (service "gemini",
-// user "antigravity") — global, so --gemini_dir does NOT isolate accounts.
+// user "antigravity"): global, so --gemini_dir does NOT isolate accounts.
 // Pattern (per antigravity-swap): snapshot each login to a slot file once,
 // then swap a slot's blob into the live store only for the seconds a spawn
 // or quota check needs it, restoring the previous login in a finally block.

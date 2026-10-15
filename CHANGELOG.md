@@ -10,7 +10,7 @@ This file tracks user-visible changes between releases.
 - Systemd unit owns the port (stale manual servers removed); quickstart uses
   a fresh `user` session key so the demo answers DEMO-OK
 
-## [1.0.0] — 2026-10-14
+## [1.0.0] - 2026-10-14
 - OpenAI-compatible `POST /v1/chat/completions` (SSE + non-stream) over
   persistent `agy stream-json` workers with delta-only prompts
 - Multi-account health + quota rotation (70/+1/−10/−20, 70% safety buffer,

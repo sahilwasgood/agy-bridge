@@ -326,7 +326,7 @@ async function* runCompletion({ messages, tools, model, sessionKey, signal }) {
     try {
       const gen = w.runTurn(promptText);
       let result = null;
-      // capture generator return (result) — iterate manually
+      // capture generator return (result): iterate manually
       while (true) {
         const n = await gen.next();
         if (n.done) { result = n.value; break; }
