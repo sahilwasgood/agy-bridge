@@ -2,6 +2,23 @@
 
 OpenAI-compatible HTTP bridge over persistent `agy` workers, with multi-account quota rotation, tool calls, and vision.
 
+## Give this to your AI agent
+
+Copy-paste to set up the whole thing:
+
+```text
+Set up agy-bridge in ~/agy-bridge so I can use my Google Antigravity logins from opencode.
+
+1. Clone https://github.com/sahilwasgood/agy-bridge to ~/agy-bridge. Bun and the `agy` CLI must be installed; I must already be logged in (verify with `agy models`).
+2. `cp agy-bridge.example.json agy-bridge.json` and put a long random string in apiKey.
+3. Run `bun server.js snapshot acc1` to save my current agy login. For each extra Google account: run `bun server.js onboard`, then ask me to run `agy` and log in, then run `bun server.js snapshot acc<N>`. One slot per Google account, never the same account twice.
+4. Start the bridge durably (systemd user unit in agy-bridge.service.example, or the setsid fallback in the README). Verify `GET /v1/models` with the bearer key.
+5. Add the `agy-local` provider to my opencode.json pointing at http://127.0.0.1:8766/v1 (wiring is in the README details section), one model entry per effort level. Restart opencode and verify with `opencode models agy-local`.
+6. Run `bun test.js` (must be 12/12) and `./examples/quickstart.sh` with AGY_BRIDGE_KEY set (must end in DEMO-OK).
+
+Never commit accounts/, agy-bridge.json, or usage logs. Report what works and what needs my manual action (only the Google OAuth clicks need me).
+```
+
 ```mermaid
 flowchart LR
     OC["opencode / any OpenAI client"] -->|POST /v1/chat/completions<br/>SSE + tools + images| B["agy-bridge :8766"]
@@ -22,23 +39,6 @@ export AGY_BRIDGE_KEY=<apiKey>
 ```
 
 Endpoints: `GET /v1/models`, `POST /v1/chat/completions` (SSE + tools + images), `GET /v1/quotas`.
-
-## Give this to your AI agent
-
-Copy-paste to set up the whole thing:
-
-```text
-Set up agy-bridge in ~/agy-bridge so I can use my Google Antigravity logins from opencode.
-
-1. Clone https://github.com/sahilwasgood/agy-bridge to ~/agy-bridge. Bun and the `agy` CLI must be installed; I must already be logged in (verify with `agy models`).
-2. `cp agy-bridge.example.json agy-bridge.json` and put a long random string in apiKey.
-3. Run `bun server.js snapshot acc1` to save my current agy login. For each extra Google account: run `bun server.js onboard`, then ask me to run `agy` and log in, then run `bun server.js snapshot acc<N>`. One slot per Google account, never the same account twice.
-4. Start the bridge durably (systemd user unit in agy-bridge.service.example, or the setsid fallback in the README). Verify `GET /v1/models` with the bearer key.
-5. Add the `agy-local` provider to my opencode.json pointing at http://127.0.0.1:8766/v1 (wiring is in the README details section), one model entry per effort level. Restart opencode and verify with `opencode models agy-local`.
-6. Run `bun test.js` (must be 12/12) and `./examples/quickstart.sh` with AGY_BRIDGE_KEY set (must end in DEMO-OK).
-
-Never commit accounts/, agy-bridge.json, or usage logs. Report what works and what needs my manual action (only the Google OAuth clicks need me).
-```
 
 <details>
 <summary>Setup, wiring, design notes</summary>
